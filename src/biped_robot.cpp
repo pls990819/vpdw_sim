@@ -174,7 +174,7 @@ namespace Biped
         double X = _l*sin(_theta(0))-_l*sin(_theta(1));
         double Y = _l*cos(_theta(0))-_l*cos(_theta(1));
         double Y_dot = -_vtheta(0)*_l*sin(_theta(0))+_vtheta(1)*_l*sin(_theta(1));
-        if(X > 0 && X < currentLeftLength && Y <= 0 && Y_dot <= 0){ // 未完当前斜坡
+        if(X > 0.1 && X < currentLeftLength && Y <= 0 && Y_dot <= 0){ // 未完当前斜坡
             currentLeftLength -= X;
             return true;
         } 

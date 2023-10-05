@@ -7,12 +7,13 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
+  roslib
   std_msgs
   visualization_msgs
   message_generation
 )
 find_package(Eigen3 REQUIRED)
-
+find_package(PythonLibs 2.7)
 
 add_message_files(
   FILES
@@ -28,10 +29,9 @@ generate_messages(
 catkin_package(
  INCLUDE_DIRS include
  LIBRARIES learning_pkg
- CATKIN_DEPENDS roscpp rospy std_msgs visualization_msgs message_runtime
+ CATKIN_DEPENDS roscpp rospy roslib std_msgs visualization_msgs message_runtime
 #  DEPENDS system_lib
 )
-
 
 include_directories(
   include
@@ -51,7 +51,19 @@ add_executable(vpdw_plot
   )
 target_link_libraries(vpdw_plot ${catkin_LIBRARIES})
 
-add_executable(adaptive_control
-  src/controller.cpp
+add_executable(ctc_controller
+  src/ctc_controller.cpp
   )
-target_link_libraries(adaptive_control ${catkin_LIBRARIES})
+target_link_libraries(ctc_controller ${catkin_LIBRARIES})
+
+add_executable(adaptive_controller
+  src/adaptive_controller.cpp
+  )
+target_link_libraries(adaptive_controller ${catkin_LIBRARIES} ${PYTHON_LIBRARIES})
+target_include_directories(adaptive_controller PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+add_executable(plotlimitcycle
+  src/plotlimitcycle.cpp
+  )
+target_link_libraries(plotlimitcycle ${catkin_LIBRARIES} ${PYTHON_LIBRARIES})
+target_include_directories(plotlimitcycle PRIVATE ${PYTHON_INCLUDE_DIRS})

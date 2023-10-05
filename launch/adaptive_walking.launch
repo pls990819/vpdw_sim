@@ -3,5 +3,6 @@
     <rosparam file="$(find vpdw_sim)/param/biped.yaml" command="load"/>
     <node pkg="vpdw_sim" type="vpdw_walker" name="vpdw_walker" output="screen"/>
     <node pkg="vpdw_sim" type="vpdw_plot" name="vpdw_plot" output="screen"/>
-    <node pkg="vpdw_sim" type="adaptive_control" name="adaptive_control" output="screen"/>
+    <node pkg="vpdw_sim" type="adaptive_controller" name="adaptive_controller" output="screen"/>
+    <node pkg="vpdw_sim" type="plotlimitcycle" name="plotlimitcycle" output="screen"/>
 </launch>

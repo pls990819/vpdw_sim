@@ -1,4 +1,5 @@
 #include<ros/ros.h>
+#include<ros/package.h>
 #include<Eigen/Eigen>
 #include<std_msgs/Float32MultiArray.h>
 #include <std_msgs/Bool.h>
@@ -8,13 +9,6 @@
 #include<fstream>
 #include<string>
 using namespace std;
-
-int nchoosek(int n, int k) {
-    if (k == 0 || k == n) {
-        return 1;
-    }
-    return nchoosek(n - 1, k - 1) + nchoosek(n - 1, k);
-}
 
 // ROS
 ros::Subscriber bipedStateSub;
@@ -46,9 +40,6 @@ Eigen::Vector2d e1,e2;
 bool finish = false;
 Eigen::Vector2d torque;
 int curt = 0;
-double zeta = 0.8;
-double period;
-int trajectoryStep = 1000;
 
 
 // bipedStateSub callback funtion
@@ -139,15 +130,15 @@ void trajectoryInit(string filename) {
 	readfile.close();//关闭文件夹
     trajectoryLen = referenceTrajectory.size();
     cout << trajectoryLen << endl;
-    // 初始化重规划参数
-    period = (double)trajectoryLen/trajectoryStep;
 }
 
 
 
 int main(int argc,char** argv){
     ros::init(argc,argv,"control");
-    trajectoryInit("/home/pls/pdw_ws/src/vpdw_sim/src/newtraj.txt");
+    string package_name = "vpdw_sim";
+    std::string file_path = ros::package::getPath(package_name) + "/trajectory/newtraj.txt";
+    trajectoryInit(file_path);
     controllerInit();
     ros::Rate loop_rate(100);
     while(ros::ok()){
